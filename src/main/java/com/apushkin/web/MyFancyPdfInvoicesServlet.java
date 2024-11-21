@@ -1,8 +1,6 @@
 package com.apushkin.web;
 
 import com.apushkin.model.Invoice;
-import com.apushkin.service.InvoiceService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,9 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static com.apushkin.context.Application.invoiceService;
+import static com.apushkin.context.Application.objectMapper;
+
 public class MyFancyPdfInvoicesServlet extends HttpServlet {
-    private final InvoiceService invoiceService =  new InvoiceService();
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
