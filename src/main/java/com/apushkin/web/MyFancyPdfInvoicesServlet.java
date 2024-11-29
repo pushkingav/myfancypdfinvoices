@@ -1,17 +1,28 @@
 package com.apushkin.web;
 
+import com.apushkin.context.MyFancyPdfInvoicesApplicationConfiguration;
 import com.apushkin.model.Invoice;
+import com.apushkin.service.InvoiceService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 import java.util.List;
 
-import static com.apushkin.context.Application.invoiceService;
-import static com.apushkin.context.Application.objectMapper;
-
 public class MyFancyPdfInvoicesServlet extends HttpServlet {
+    private InvoiceService invoiceService;
+    private ObjectMapper objectMapper;
+
+    @Override
+    public void init() {
+        AnnotationConfigApplicationContext ctx =
+                new AnnotationConfigApplicationContext(MyFancyPdfInvoicesApplicationConfiguration.class);
+        this.invoiceService = ctx.getBean(InvoiceService.class);
+        this.objectMapper = ctx.getBean(ObjectMapper.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
