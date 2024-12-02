@@ -2,12 +2,13 @@ package com.apushkin.service;
 
 import com.apushkin.model.Invoice;
 import com.apushkin.model.User;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
+@Component
 public class InvoiceService {
     private final UserService userService;
     private final List<Invoice> invoices = new CopyOnWriteArrayList<>();

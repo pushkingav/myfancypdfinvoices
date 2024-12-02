@@ -2,7 +2,9 @@ package com.apushkin.service;
 
 import com.apushkin.model.User;
 import com.github.javafaker.Faker;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserService {
     final private Faker faker;
 
