@@ -2,6 +2,8 @@ package com.apushkin.service;
 
 import com.apushkin.model.Invoice;
 import com.apushkin.model.User;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -15,6 +17,18 @@ public class InvoiceService {
 
     public InvoiceService(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Fetching pdf template from S3...");
+        //TODO - fetch a real template from S3
+    }
+
+    @PreDestroy
+    public void destroy() {
+        System.out.println("Deleting local pdf template...");
+        //TODO - actual deletion of pdf template(s)
     }
 
     public List<Invoice> findAll() {
