@@ -4,6 +4,7 @@ import com.apushkin.model.Invoice;
 import com.apushkin.model.User;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -14,9 +15,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class InvoiceService {
     private final UserService userService;
     private final List<Invoice> invoices = new CopyOnWriteArrayList<>();
+    private String cdnUrl;
 
-    public InvoiceService(UserService userService) {
+    public InvoiceService(UserService userService, @Value("${cdn.url}") String cdnUrl) {
         this.userService = userService;
+        this.cdnUrl = cdnUrl;
     }
 
     @PostConstruct
@@ -41,7 +44,7 @@ public class InvoiceService {
             throw new IllegalStateException();
         }
         // Real invoice pdf creation and storing on cdn server
-        Invoice invoice = new Invoice(userId, amount, "http://www.africau.edu/images/default/sample.pdf");
+        Invoice invoice = new Invoice(userId, amount, cdnUrl + "/images/default/sample.pdf");
         invoices.add(invoice);
         return invoice;
     }
