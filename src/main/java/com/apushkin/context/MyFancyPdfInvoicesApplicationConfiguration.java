@@ -18,16 +18,6 @@ public class MyFancyPdfInvoicesApplicationConfiguration {
         return new Faker();
     }
 
-    /*@Bean
-    public UserService userService(Faker faker) {
-        return new UserService(faker);
-    }
-
-    @Bean
-    public InvoiceService invoiceService(UserService userService) {
-        return new InvoiceService(userService);
-    }*/
-
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
