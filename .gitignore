@@ -2,3 +2,4 @@
 /target
 /tomcat.8080
 dependency-reduced-pom.xml
+/src/main/java/com/apushkin/copilot/
