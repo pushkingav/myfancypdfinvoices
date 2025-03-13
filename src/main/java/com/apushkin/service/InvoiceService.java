@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -15,13 +17,11 @@ import java.util.Objects;
 
 @Component
 public class InvoiceService {
-    private final UserService userService;
     private final JdbcTemplate jdbcTemplate;
-    private String cdnUrl;
+    private final String cdnUrl;
 
-    public InvoiceService(UserService userService, JdbcTemplate jdbcTemplate,
+    public InvoiceService(JdbcTemplate jdbcTemplate,
                           @Value("${cdn.url}") String cdnUrl) {
-        this.userService = userService;
         this.jdbcTemplate = jdbcTemplate;
         this.cdnUrl = cdnUrl;
     }
@@ -38,7 +38,10 @@ public class InvoiceService {
         //TODO - actual deletion of pdf template(s)
     }
 
+    @Transactional
     public List<Invoice> findAll() {
+        System.out.printf("Is database transaction open: %s%n", TransactionSynchronizationManager
+                .isActualTransactionActive());
         return jdbcTemplate.query("select id, user_id, pdf_url, amount from invoices", (resultSet, rowNum) -> {
             Invoice invoice = new Invoice();
             invoice.setId(resultSet.getObject("id").toString());
@@ -49,7 +52,10 @@ public class InvoiceService {
         });
     }
 
+    @Transactional
     public Invoice create(String userId, Integer amount) {
+        System.out.printf("Is database transaction open: %s%n", TransactionSynchronizationManager
+                .isActualTransactionActive());
         String generatedPdfUrl = cdnUrl + "/images/default/sample.pdf";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
